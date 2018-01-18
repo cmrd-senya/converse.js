@@ -411,9 +411,11 @@
                 },
 
                 afterMessagesFetched () {
+                  /*
                     this.insertIntoDOM();
                     this.scrollDown();
                     this.content.addEventListener('scroll', this.markScrolled.bind(this));
+                  */
                     _converse.emit('afterMessagesFetched', this);
                 },
 
@@ -730,7 +732,7 @@
                 },
 
                 handleTextMessage (message) {
-                    this.showMessage(_.clone(message.attributes));
+                    //this.showMessage(_.clone(message.attributes));
                     if (u.isNewMessage(message)) {
                         if (message.get('sender') === 'me') {
                             // We remove the "scrolled" flag so that the chat area

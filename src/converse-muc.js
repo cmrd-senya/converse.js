@@ -170,7 +170,7 @@
                                 b64_sha1(`converse.roomspanel${_converse.bare_jid}`))
                         }))()
                     });
-                    this.roomspanel.insertIntoDOM().model.fetch();
+                    this.roomspanel.model.fetch();
                     if (!this.roomspanel.model.get('nick')) {
                         this.roomspanel.model.save({
                             nick: Strophe.getNodeFromJid(_converse.bare_jid)
@@ -453,7 +453,7 @@
 
                     this.createEmojiPicker();
                     this.createOccupantsView();
-                    this.render().insertIntoDOM();
+                    //this.render().insertIntoDOM();
                     this.registerHandlers();
 
                     if (this.model.get('connection_status') !==  converse.ROOMSTATUS.ENTERED) {
@@ -482,7 +482,7 @@
 
                 renderHeading () {
                     /* Render the heading UI of the chat room. */
-                    this.el.querySelector('.chat-head-chatroom').innerHTML = this.generateHeadingHTML();
+                    //this.el.querySelector('.chat-head-chatroom').innerHTML = this.generateHeadingHTML();
                 },
 
                 renderChatArea () {
@@ -1816,15 +1816,7 @@
                         this.model.save('connection_status', converse.ROOMSTATUS.DISCONNECTED);
                         return;
                     }
-                    _.each(notification.messages, (message) => {
-                        this.content.insertAdjacentHTML(
-                            'beforeend',
-                            tpl_info({
-                                'data': '',
-                                'isodate': moment().format(),
-                                'message': message
-                            }));
-                    });
+
                     if (notification.reason) {
                         this.showStatusNotification(__('The reason given is: "%1$s".', notification.reason), true);
                     }
@@ -1941,7 +1933,7 @@
                     const is_self = stanza.querySelectorAll("status[code='110']").length;
                     const iteratee = _.partial(this.parseXUserElement.bind(this), _, stanza, is_self);
                     const notifications = _.reject(_.map(elements, iteratee), _.isEmpty);
-                    if (_.isEmpty(notifications)) {
+                    /*if (_.isEmpty(notifications)) {
                         if (_converse.muc_show_join_leave &&
                                 stanza.nodeName === 'presence' &&
                                 this.model.get('connection_status') === converse.ROOMSTATUS.ENTERED) {
@@ -1949,7 +1941,7 @@
                         }
                     } else {
                         _.each(notifications, this.displayNotificationsforUser.bind(this));
-                    }
+                    }*/
                     return stanza;
                 },
 
@@ -2613,9 +2605,9 @@
                 },
 
                 insertIntoDOM () {
-                    this.parent_el.appendChild(this.render().el);
-                    this.tabs = this.parent_el.parentNode.querySelector('#controlbox-tabs');
-                    this.tabs.appendChild(this.tab_el);
+                    //this.parent_el.appendChild(this.render().el);
+                    //this.tabs = this.parent_el.parentNode.querySelector('#controlbox-tabs');
+                    //this.tabs.appendChild(this.tab_el);
                     return this;
                 },
 
