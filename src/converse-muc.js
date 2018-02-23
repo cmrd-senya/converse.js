@@ -122,6 +122,9 @@
                     const { _converse } = this.__super__;
                     let view = this.get(item.get('id'));
                     if (!view && item.get('type') === CHATROOMS_TYPE) {
+                        if (!item.__super__) {
+                          item.__super__ = {_converse: _converse};
+                        }
                         view = new _converse.ChatRoomView({'model': item});
                         return this.add(item.get('id'), view);
                     } else {
