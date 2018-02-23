@@ -117,36 +117,6 @@
                 },
             },
 
-            ControlBoxView: {
-                renderRoomsPanel () {
-                    const { _converse } = this.__super__;
-                    this.roomspanel = new _converse.RoomsPanel({
-                        'parent': this.el.querySelector('.controlbox-panes'),
-                        'model': new (_converse.RoomsPanelModel.extend({
-                            id: b64_sha1(`converse.roomspanel${_converse.bare_jid}`), // Required by sessionStorage
-                            browserStorage: new Backbone.BrowserStorage[_converse.storage](
-                                b64_sha1(`converse.roomspanel${_converse.bare_jid}`))
-                        }))()
-                    });
-                    this.roomspanel.model.fetch();
-                    if (!this.roomspanel.model.get('nick')) {
-                        this.roomspanel.model.save({
-                            nick: Strophe.getNodeFromJid(_converse.bare_jid)
-                        });
-                    }
-                    _converse.emit('roomsPanelRendered');
-                },
-
-                renderContactsPanel () {
-                    const { _converse } = this.__super__;
-                    this.__super__.renderContactsPanel.apply(this, arguments);
-                    if (_converse.allow_muc) {
-                        this.renderRoomsPanel();
-                    }
-                },
-
-            },
-
             ChatBoxViews: {
                 onChatBoxAdded (item) {
                     const { _converse } = this.__super__;
