@@ -410,7 +410,6 @@
                     this.model.on('change:name', this.renderHeading, this);
 
                     this.createEmojiPicker();
-                    this.createOccupantsView();
                     //this.render().insertIntoDOM();
                     this.registerHandlers();
 
@@ -447,20 +446,9 @@
                      */
                     if (_.isNull(this.el.querySelector('.chat-area'))) {
                         const container_el = this.el.querySelector('.chatroom-body');
-                        container_el.insertAdjacentElement('beforeend', this.occupantsview.el);
                         this.content = this.el.querySelector('.chat-content');
                         this.toggleOccupants(null, true);
                     }
-                    return this;
-                },
-
-                createOccupantsView () {
-                    /* Create the ChatRoomOccupantsView Backbone.NativeView
-                     */
-                    const model = new _converse.ChatRoomOccupants();
-                    model.chatroomview = this;
-                    this.occupantsview = new _converse.ChatRoomOccupantsView({'model': model});
-                    this.occupantsview.model.on('change:role', this.informOfOccupantsRoleChange, this);
                     return this;
                 },
 
@@ -504,7 +492,6 @@
                         this.model.clearUnreadMsgCounter();
                         this.model.save();
                     }
-                    this.occupantsview.setOccupantsHeight();
                     this.scrollDown();
                     if (focus) { this.focus(); }
                 },
@@ -577,7 +564,6 @@
                         this.el.querySelector('.chat-area').classList.remove('full');
                         this.el.querySelector('.occupants').classList.remove('hidden');
                     }
-                    this.occupantsview.setOccupantsHeight();
                 },
 
                 toggleOccupants (ev, preserve_state) {
@@ -1218,8 +1204,6 @@
                     if (Backbone.history.getFragment() === "converse/room?jid="+this.model.get('jid')) {
                         _converse.router.navigate('');
                     }
-                    this.occupantsview.model.reset();
-                    this.occupantsview.model.browserStorage._clear();
                     if (_converse.connection.connected) {
                         this.sendUnavailablePresence(exit_msg);
                     }
@@ -1814,12 +1798,6 @@
                         this.displayLeaveNotification(stanza);
                     } else {
                         const nick = Strophe.getResourceFromJid(stanza.getAttribute('from'));
-                        if (!this.occupantsview.model.find({'nick': nick})) {
-                            // Only show join message if we don't already have the
-                            // occupant model. Doing so avoids showing duplicate
-                            // join messages.
-                            this.displayJoinNotification(stanza);
-                        }
                     }
                 },
 
@@ -1977,7 +1955,6 @@
                     this.hideSpinner().showStatusMessages(pres);
                     // This must be called after showStatusMessages so that
                     // "join" messages are correctly shown.
-                    this.occupantsview.updateOccupantsOnPresence(pres);
                     if (this.model.get('role') !== 'none' &&
                             this.model.get('connection_status') === converse.ROOMSTATUS.CONNECTING) {
                         this.model.save('connection_status', converse.ROOMSTATUS.CONNECTED);
@@ -2083,20 +2060,6 @@
                 }
             });
 
-            _converse.ChatRoomOccupantView = Backbone.VDOMView.extend({
-                tagName: 'li',
-                initialize () {
-                    this.model.on('change', this.render, this);
-                },
-
-                toHTML () {
-                },
-
-                destroy () {
-                    this.el.parentElement.removeChild(this.el);
-                }
-            });
-
             _converse.ChatRoomOccupants = Backbone.Collection.extend({
                 model: _converse.ChatRoomOccupant,
 
@@ -2112,258 +2075,6 @@
                     }
                 },
             });
-
-            _converse.ChatRoomOccupantsView = Backbone.OrderedListView.extend({
-                tagName: 'div',
-                className: 'occupants',
-                listItems: 'model',
-                sortEvent: 'change:role',
-                listSelector: '.occupant-list',
-
-                ItemView: _converse.ChatRoomOccupantView,
-
-                initialize () {
-                    Backbone.OrderedListView.prototype.initialize.apply(this, arguments);
-
-                    this.chatroomview = this.model.chatroomview;
-                    this.chatroomview.model.on('change:open', this.renderInviteWidget, this);
-                    this.chatroomview.model.on('change:affiliation', this.renderInviteWidget, this);
-                    this.chatroomview.model.on('change:hidden', this.onFeatureChanged, this);
-                    this.chatroomview.model.on('change:mam_enabled', this.onFeatureChanged, this);
-                    this.chatroomview.model.on('change:membersonly', this.onFeatureChanged, this);
-                    this.chatroomview.model.on('change:moderated', this.onFeatureChanged, this);
-                    this.chatroomview.model.on('change:nonanonymous', this.onFeatureChanged, this);
-                    this.chatroomview.model.on('change:open', this.onFeatureChanged, this);
-                    this.chatroomview.model.on('change:passwordprotected', this.onFeatureChanged, this);
-                    this.chatroomview.model.on('change:persistent', this.onFeatureChanged, this);
-                    this.chatroomview.model.on('change:publicroom', this.onFeatureChanged, this);
-                    this.chatroomview.model.on('change:semianonymous', this.onFeatureChanged, this);
-                    this.chatroomview.model.on('change:temporary', this.onFeatureChanged, this);
-                    this.chatroomview.model.on('change:unmoderated', this.onFeatureChanged, this);
-                    this.chatroomview.model.on('change:unsecured', this.onFeatureChanged, this);
-
-                    const id = b64_sha1(`converse.occupants${_converse.bare_jid}${this.chatroomview.model.get('jid')}`);
-                    this.model.browserStorage = new Backbone.BrowserStorage.session(id);
-                    this.render();
-                    this.model.fetch({
-                        'add': true,
-                        'silent': true,
-                        'success': this.sortAndPositionAllItems.bind(this)
-                    });
-                },
-
-                render () {
-                    if (_converse.allow_muc_invitations) {
-                        _converse.api.waitUntil('rosterContactsFetched').then(
-                            this.renderInviteWidget.bind(this)
-                        );
-                    }
-                    return this.renderRoomFeatures();
-                },
-
-                renderInviteWidget () {
-                    const form = this.el.querySelector('form.room-invite');
-                    if (this.shouldInviteWidgetBeShown()) {
-                        if (_.isNull(form)) {
-                            const heading = this.el.querySelector('.occupants-heading');
-                            this.initInviteWidget();
-                        }
-                    } else if (!_.isNull(form)) {
-                        form.remove();
-                    }
-                    return this;
-                },
-
-                renderRoomFeatures () {
-                    const picks = _.pick(this.chatroomview.model.attributes, ROOM_FEATURES),
-                        iteratee = (a, v) => a || v,
-                        el = this.el.querySelector('.chatroom-features');
-
-                    return this;
-                },
-
-                onFeatureChanged (model) {
-                    /* When a feature has been changed, it's logical opposite
-                     * must be set to the opposite value.
-                     *
-                     * So for example, if "temporary" was set to "false", then
-                     * "persistent" will be set to "true" in this method.
-                     *
-                     * Additionally a debounced render method is called to make
-                     * sure the features widget gets updated.
-                     */
-                    if (_.isUndefined(this.debouncedRenderRoomFeatures)) {
-                        this.debouncedRenderRoomFeatures = _.debounce(
-                            this.renderRoomFeatures, 100, {'leading': false}
-                        );
-                    }
-                    const changed_features = {};
-                    _.each(_.keys(model.changed), function (k) {
-                        if (!_.isNil(ROOM_FEATURES_MAP[k])) {
-                            changed_features[ROOM_FEATURES_MAP[k]] = !model.changed[k];
-                        }
-                    });
-                    this.chatroomview.model.save(changed_features, {'silent': true});
-                    this.debouncedRenderRoomFeatures();
-                },
-
-                setOccupantsHeight () {
-                    const el = this.el.querySelector('.chatroom-features');
-                    this.el.querySelector('.occupant-list').style.cssText =
-                        `height: calc(100% - ${el.offsetHeight}px - 5em);`;
-                },
-
-                parsePresence (pres) {
-                    const id = Strophe.getResourceFromJid(pres.getAttribute("from"));
-                    const data = {
-                        nick: id,
-                        type: pres.getAttribute("type"),
-                        states: []
-                    };
-                    _.each(pres.childNodes, function (child) {
-                        switch (child.nodeName) {
-                            case "status":
-                                data.status = child.textContent || null;
-                                break;
-                            case "show":
-                                data.show = child.textContent || 'online';
-                                break;
-                            case "x":
-                                if (child.getAttribute("xmlns") === Strophe.NS.MUC_USER) {
-                                    _.each(child.childNodes, function (item) {
-                                        switch (item.nodeName) {
-                                            case "item":
-                                                data.affiliation = item.getAttribute("affiliation");
-                                                data.role = item.getAttribute("role");
-                                                data.jid = item.getAttribute("jid");
-                                                data.nick = item.getAttribute("nick") || data.nick;
-                                                break;
-                                            case "status":
-                                                if (item.getAttribute("code")) {
-                                                    data.states.push(item.getAttribute("code"));
-                                                }
-                                        }
-                                    });
-                                }
-                        }
-                    });
-                    return data;
-                },
-
-                findOccupant (data) {
-                    /* Try to find an existing occupant based on the passed in
-                     * data object.
-                     *
-                     * If we have a JID, we use that as lookup variable,
-                     * otherwise we use the nick. We don't always have both,
-                     * but should have at least one or the other.
-                     */
-                    const jid = Strophe.getBareJidFromJid(data.jid);
-                    if (jid !== null) {
-                        return this.model.where({'jid': jid}).pop();
-                    } else {
-                        return this.model.where({'nick': data.nick}).pop();
-                    }
-                },
-
-                updateOccupantsOnPresence (pres) {
-                    /* Given a presence stanza, update the occupant models
-                     * based on its contents.
-                     *
-                     * Parameters:
-                     *  (XMLElement) pres: The presence stanza
-                     */
-                    const data = this.parsePresence(pres);
-                    if (data.type === 'error') {
-                        return true;
-                    }
-                    const occupant = this.findOccupant(data);
-                    if (data.type === 'unavailable') {
-                        if (occupant) { occupant.destroy(); }
-                    } else {
-                        const jid = Strophe.getBareJidFromJid(data.jid);
-                        const attributes = _.extend(data, {
-                            'jid': jid ? jid : undefined,
-                            'resource': data.jid ? Strophe.getResourceFromJid(data.jid) : undefined
-                        });
-                        if (occupant) {
-                            occupant.save(attributes);
-                        } else {
-                            this.model.create(attributes);
-                        }
-                    }
-                },
-
-                promptForInvite (suggestion) {
-                    const reason = prompt(
-                        __('You are about to invite %1$s to the chat room "%2$s". '+
-                           'You may optionally include a message, explaining the reason for the invitation.',
-                           suggestion.text.label, this.model.get('id'))
-                    );
-                    if (reason !== null) {
-                        this.chatroomview.directInvite(suggestion.text.value, reason);
-                    }
-                    const form = suggestion.target.form,
-                          error = form.querySelector('.pure-form-message.error');
-                    if (!_.isNull(error)) {
-                        error.parentNode.removeChild(error);
-                    }
-                    suggestion.target.value = '';
-                },
-
-                inviteFormSubmitted (evt) {
-                    evt.preventDefault();
-                    const el = evt.target.querySelector('input.invited-contact'),
-                          jid = el.value;
-                    if (!jid || _.compact(jid.split('@')).length < 2) {
-                        this.initInviteWidget();
-                        return;
-                    }
-                    this.promptForInvite({
-                        'target': el,
-                        'text': {
-                            'label': jid,
-                            'value': jid
-                        }});
-                },
-
-                shouldInviteWidgetBeShown () {
-                    return _converse.allow_muc_invitations &&
-                        (this.chatroomview.model.get('open') ||
-                            this.chatroomview.model.get('affiliation') === "owner"
-                        );
-                },
-
-                initInviteWidget () {
-                    const form = this.el.querySelector('form.room-invite');
-                    if (_.isNull(form)) {
-                        return;
-                    }
-                    form.addEventListener('submit', this.inviteFormSubmitted.bind(this), false);
-                    const el = this.el.querySelector('input.invited-contact');
-                    const list = _converse.roster.map(function (item) {
-                            const label = item.get('fullname') || item.get('jid');
-                            return {'label': label, 'value':item.get('jid')};
-                        });
-                    const awesomplete = new Awesomplete(el, {
-                        'minChars': 1,
-                        'list': list
-                    });
-                    el.addEventListener('awesomplete-selectcomplete',
-                        this.promptForInvite.bind(this));
-                }
-            });
-
-
-            _converse.MUCJoinForm = Backbone.VDOMView.extend({
-                initialize () {
-                    this.model.on('change:muc_domain', this.render, this);
-                },
-
-                toHTML () {
-                }
-            });
-
 
             _converse.RoomsPanelModel = Backbone.Model.extend({
                 defaults: {
@@ -2391,7 +2102,6 @@
                 },
 
                 initialize (cfg) {
-                    this.join_form = new _converse.MUCJoinForm({'model': this.model});
                     this.parent_el = cfg.parent;
                     this.tab_el = document.createElement('li');
                     this.model.on('change:muc_domain', this.onDomainChange, this);
@@ -2401,9 +2111,6 @@
                 },
 
                 render () {
-                    this.join_form.setElement(this.el.querySelector('.add-chatroom'));
-                    this.join_form.render();
-
                     this.renderTab();
                     const controlbox = _converse.chatboxes.get('controlbox');
                     if (controlbox.get('active-panel') !== ROOMS_PANEL_ID) {
