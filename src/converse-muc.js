@@ -14,57 +14,15 @@
             "form-utils",
             "converse-core",
             "lodash.fp",
-            "tpl!chatarea",
-            "tpl!chatroom",
-            "tpl!chatroom_disconnect",
-            "tpl!chatroom_features",
-            "tpl!chatroom_form",
-            "tpl!chatroom_head",
-            "tpl!chatroom_invite",
-            "tpl!chatroom_join_form",
-            "tpl!chatroom_nickname_form",
-            "tpl!chatroom_password_form",
-            "tpl!chatroom_sidebar",
-            "tpl!chatroom_toolbar",
-            "tpl!chatrooms_tab",
-            "tpl!info",
-            "tpl!occupant",
-            "tpl!room_description",
-            "tpl!room_item",
-            "tpl!room_panel",
-            "tpl!rooms_results",
-            "tpl!spinner",
             "awesomplete",
             "converse-chatview",
             "converse-disco",
-            "backbone.overview",
-            "backbone.orderedlistview",
-            "backbone.vdomview"
+            "backbone.overview"
     ], factory);
 }(this, function (
             u,
             converse,
             fp,
-            tpl_chatarea,
-            tpl_chatroom,
-            tpl_chatroom_disconnect,
-            tpl_chatroom_features,
-            tpl_chatroom_form,
-            tpl_chatroom_head,
-            tpl_chatroom_invite,
-            tpl_chatroom_join_form,
-            tpl_chatroom_nickname_form,
-            tpl_chatroom_password_form,
-            tpl_chatroom_sidebar,
-            tpl_chatroom_toolbar,
-            tpl_chatrooms_tab,
-            tpl_info,
-            tpl_occupant,
-            tpl_room_description,
-            tpl_room_item,
-            tpl_room_panel,
-            tpl_rooms_results,
-            tpl_spinner,
             Awesomplete
     ) {
 
@@ -471,7 +429,6 @@
 
                 render () {
                     this.el.setAttribute('id', this.model.get('box_id'));
-                    this.el.innerHTML = tpl_chatroom();
                     this.renderHeading();
                     this.renderChatArea();
                     if (this.model.get('connection_status') !== converse.ROOMSTATUS.ENTERED) {
@@ -490,15 +447,7 @@
                      */
                     if (_.isNull(this.el.querySelector('.chat-area'))) {
                         const container_el = this.el.querySelector('.chatroom-body');
-                        container_el.innerHTML = tpl_chatarea({
-                            'label_message': __('Message'),
-                            'label_send': __('Send'),
-                            'show_send_button': _converse.show_send_button,
-                            'show_toolbar': _converse.show_toolbar,
-                            'unread_msgs': __('You have unread messages')
-                        });
                         container_el.insertAdjacentElement('beforeend', this.occupantsview.el);
-                        this.renderToolbar(tpl_chatroom_toolbar);
                         this.content = this.el.querySelector('.chat-content');
                         this.toggleOccupants(null, true);
                     }
@@ -543,13 +492,6 @@
                 generateHeadingHTML () {
                     /* Returns the heading HTML to be rendered.
                      */
-                    return tpl_chatroom_head(
-                        _.extend(this.model.toJSON(), {
-                            Strophe: Strophe,
-                            info_close: __('Close and leave this room'),
-                            info_configure: __('Configure this room'),
-                            description: this.model.get('description') || ''
-                    }));
                 },
 
                 afterShown (focus) {
@@ -1303,7 +1245,6 @@
                     const container_el = this.el.querySelector('.chatroom-body');
                     _.each(container_el.querySelectorAll('.chatroom-form-container'), u.removeElement);
                     _.each(container_el.children, u.hideElement);
-                    container_el.insertAdjacentHTML('beforeend', tpl_chatroom_form());
 
                     const form_el = container_el.querySelector('form.chatroom-form'),
                           fieldset_el = form_el.querySelector('fieldset'),
@@ -1553,7 +1494,6 @@
                     else {
                         nick_el.classList.remove('error');
                     }
-                    this.el.querySelector('.chatroom-form-container').outerHTML = tpl_spinner();
                     this.join(nick);
                 },
 
@@ -1660,14 +1600,6 @@
                         message = '';
                     }
                     const container_el = this.el.querySelector('.chatroom-body');
-                    container_el.insertAdjacentHTML(
-                        'beforeend',
-                        tpl_chatroom_nickname_form({
-                            heading: __('Please choose your nickname'),
-                            label_nickname: __('Nickname'),
-                            label_join: __('Enter room'),
-                            validation_message: message
-                        }));
                     this.model.save('connection_status', converse.ROOMSTATUS.NICKNAME_REQUIRED);
 
                     const form_el = this.el.querySelector('.chatroom-form');
@@ -1686,12 +1618,6 @@
                     _.each(container_el.children, u.hideElement);
                     _.each(this.el.querySelectorAll('.spinner'), u.removeElement);
 
-                    container_el.insertAdjacentHTML('beforeend',
-                        tpl_chatroom_password_form({
-                            heading: __('This chatroom requires a password'),
-                            label_password: __('Password: '),
-                            label_submit: __('Submit')
-                        }));
 
                     this.model.save('connection_status', converse.ROOMSTATUS.PASSWORD_REQUIRED);
                     this.el.querySelector('.chatroom-form').addEventListener(
@@ -1702,12 +1628,6 @@
                     u.hideElement(this.el.querySelector('.chat-area'));
                     u.hideElement(this.el.querySelector('.occupants'));
                     _.each(this.el.querySelectorAll('.spinner'), u.removeElement);
-                    this.el.querySelector('.chatroom-body').insertAdjacentHTML(
-                        'beforeend',
-                        tpl_chatroom_disconnect({
-                            'disconnect_message': msg
-                        })
-                    );
                 },
 
                 getMessageFromStatus (stat, stanza, is_self) {
@@ -1832,12 +1752,6 @@
 
                     if (_.includes(_.get(last_el, 'classList', []), 'chat-info') &&
                             _.get(last_el, 'dataset', {}).leave === `"${nick}"`) {
-                        last_el.outerHTML =
-                            tpl_info({
-                                'data': `data-leavejoin="${nick}"`,
-                                'isodate': moment().format(),
-                                'message': __('%1$s has left and re-entered the room.', nick)
-                            });
                     } else {
                         let  message;
                         if (_.get(stat, 'textContent')) {
@@ -1853,9 +1767,7 @@
                         if (_.includes(_.get(last_el, 'classList', []), 'chat-info') &&
                             _.get(last_el, 'dataset', {}).joinleave === `"${nick}"`) {
 
-                            last_el.outerHTML = tpl_info(data);
                         } else {
-                            const el = u.stringToElement(tpl_info(data));
                             this.content.insertAdjacentElement('beforeend', el);
                             this.insertDayIndicator(el);
                         }
@@ -1876,12 +1788,6 @@
                         } else {
                             message = __('%1$s has entered and left the room.', nick);
                         }
-                        last_el.outerHTML =
-                            tpl_info({
-                                'data': `data-joinleave="${nick}"`,
-                                'isodate': moment().format(),
-                                'message': message
-                            });
                     } else {
                         let message;
                         if (_.get(stat, 'textContent')) {
@@ -1897,11 +1803,7 @@
                         if (_.includes(_.get(last_el, 'classList', []), 'chat-info') &&
                             _.get(last_el, 'dataset', {}).leavejoin === `"${nick}"`) {
 
-                            last_el.outerHTML = tpl_info(data);
                         } else {
-                            const el = u.stringToElement(tpl_info(data));
-                            this.content.insertAdjacentElement('beforeend', el);
-                            this.insertDayIndicator(el);
                         }
                     }
                     this.scrollDown();
@@ -1996,7 +1898,6 @@
 
                     const container_el = this.el.querySelector('.chatroom-body');
                     const children = Array.prototype.slice.call(container_el.children, 0);
-                    container_el.insertAdjacentHTML('afterbegin', tpl_spinner());
                     _.each(children, u.hideElement);
 
                 },
@@ -2088,13 +1989,6 @@
                     // For translators: the %1$s and %2$s parts will get
                     // replaced by the user and topic text respectively
                     // Example: Topic set by JC Brand to: Hello World!
-                    this.content.insertAdjacentHTML(
-                        'beforeend',
-                        tpl_info({
-                            'data': '',
-                            'isodate': moment().format(),
-                            'message': __('Topic set by %1$s to: %2$s', sender, subject)
-                        }));
                     this.scrollDown();
                 },
 
@@ -2196,18 +2090,6 @@
                 },
 
                 toHTML () {
-                    const show = this.model.get('show') || 'online';
-                    return tpl_occupant(
-                        _.extend(
-                            { 'jid': '',
-                              'show': show,
-                              'hint_show': _converse.PRETTY_CHAT_STATUS[show],
-                              'hint_occupant': __('Click to mention %1$s in your message.', this.model.get('nick')),
-                              'desc_moderator': __('This user is a moderator.'),
-                              'desc_occupant': __('This user can send messages in this room.'),
-                              'desc_visitor': __('This user can NOT send messages in this room.')
-                            }, this.model.toJSON())
-                    );
                 },
 
                 destroy () {
@@ -2271,12 +2153,6 @@
                 },
 
                 render () {
-                    this.el.innerHTML = tpl_chatroom_sidebar(
-                        _.extend(this.chatroomview.model.toJSON(), {
-                            'allow_muc_invitations': _converse.allow_muc_invitations,
-                            'label_occupants': __('Occupants')
-                        })
-                    );
                     if (_converse.allow_muc_invitations) {
                         _converse.api.waitUntil('rosterContactsFetched').then(
                             this.renderInviteWidget.bind(this)
@@ -2290,13 +2166,6 @@
                     if (this.shouldInviteWidgetBeShown()) {
                         if (_.isNull(form)) {
                             const heading = this.el.querySelector('.occupants-heading');
-                            heading.insertAdjacentHTML(
-                                'afterend',
-                                tpl_chatroom_invite({
-                                    'error_message': null,
-                                    'label_invitation': __('Invite'),
-                                })
-                            );
                             this.initInviteWidget();
                         }
                     } else if (!_.isNull(form)) {
@@ -2310,38 +2179,6 @@
                         iteratee = (a, v) => a || v,
                         el = this.el.querySelector('.chatroom-features');
 
-                    el.innerHTML = tpl_chatroom_features(
-                            _.extend(this.chatroomview.model.toJSON(), {
-                                'has_features': _.reduce(_.values(picks), iteratee),
-                                'label_features': __('Features'),
-                                'label_hidden': __('Hidden'),
-                                'label_mam_enabled': __('Message archiving'),
-                                'label_membersonly': __('Members only'),
-                                'label_moderated': __('Moderated'),
-                                'label_nonanonymous': __('Non-anonymous'),
-                                'label_open': __('Open'),
-                                'label_passwordprotected': __('Password protected'),
-                                'label_persistent': __('Persistent'),
-                                'label_public': __('Public'),
-                                'label_semianonymous': __('Semi-anonymous'),
-                                'label_temporary': __('Temporary'),
-                                'label_unmoderated': __('Unmoderated'),
-                                'label_unsecured': __('No password'),
-                                'tt_hidden': __('This room is not publicly searchable'),
-                                'tt_mam_enabled': __('Messages are archived on the server'),
-                                'tt_membersonly': __('This room is restricted to members only'),
-                                'tt_moderated': __('This room is being moderated'),
-                                'tt_nonanonymous': __('All other room occupants can see your XMPP username'),
-                                'tt_open': __('Anyone can join this room'),
-                                'tt_passwordprotected': __('This room requires a password before entry'),
-                                'tt_persistent': __('This room persists even if it\'s unoccupied'),
-                                'tt_public': __('This room is publicly searchable'),
-                                'tt_semianonymous': __('Only moderators can see your XMPP username'),
-                                'tt_temporary': __('This room will disappear once the last person leaves'),
-                                'tt_unmoderated': __('This room is not being moderated'),
-                                'tt_unsecured': __('This room does not require a password upon entry')
-                            }));
-                    this.setOccupantsHeight();
                     return this;
                 },
 
@@ -2479,10 +2316,6 @@
                     const el = evt.target.querySelector('input.invited-contact'),
                           jid = el.value;
                     if (!jid || _.compact(jid.split('@')).length < 2) {
-                        evt.target.outerHTML = tpl_chatroom_invite({
-                            'error_message': __('Please enter a valid XMPP username'),
-                            'label_invitation': __('Invite'),
-                        });
                         this.initInviteWidget();
                         return;
                     }
@@ -2528,15 +2361,6 @@
                 },
 
                 toHTML () {
-                    return tpl_chatroom_join_form(_.assign(this.model.toJSON(), {
-                        'server_input_type': _converse.hide_muc_server && 'hidden' || 'text',
-                        'server_label_global_attr': _converse.hide_muc_server && ' hidden' || '',
-                        'label_room_name': __('Room name'),
-                        'label_nickname': __('Nickname'),
-                        'label_server': __('Server'),
-                        'label_join': __('Join Room'),
-                        'label_show_rooms': __('Show rooms')
-                    }));
                 }
             });
 
@@ -2577,7 +2401,6 @@
                 },
 
                 render () {
-                    this.el.innerHTML = tpl_room_panel();
                     this.join_form.setElement(this.el.querySelector('.add-chatroom'));
                     this.join_form.render();
 
@@ -2597,11 +2420,6 @@
                         _.partial(u.isOfType, CHATROOMS_TYPE),
                         _converse.chatboxes.models
                     );
-                    this.tab_el.innerHTML = tpl_chatrooms_tab({
-                        'label_rooms': __('Rooms'),
-                        'is_current': controlbox.get('active-panel') === ROOMS_PANEL_ID,
-                        'num_unread': fp.sum(fp.map(fp.curry(u.getAttribute)('num_unread'), chatrooms))
-                    });
                 },
 
                 insertIntoDOM () {
@@ -2632,9 +2450,6 @@
 
                 informNoRoomsFound () {
                     const chatrooms_el = this.el.querySelector('#available-chatrooms');
-                    chatrooms_el.innerHTML = tpl_rooms_results({
-                        'feedback_text': __('No rooms found')
-                    });
                     const input_el = this.el.querySelector('input#show-rooms');
                     input_el.classList.remove('hidden')
                     this.removeSpinner();
@@ -2646,12 +2461,6 @@
                             room.getAttribute('jid')
                     );
                     const div = document.createElement('div');
-                    div.innerHTML = tpl_room_item({
-                        'name': name,
-                        'jid': room.getAttribute('jid'),
-                        'open_title': __('Click to open this room'),
-                        'info_title': __('Show more information on this room')
-                    });
                     return div.firstChild;
                 },
 
@@ -2664,9 +2473,6 @@
                     if (this.rooms.length) {
                         // For translators: %1$s is a variable and will be
                         // replaced with the XMPP server name
-                        available_chatrooms.innerHTML = tpl_rooms_results({
-                            'feedback_text': __('Rooms found')
-                        });
                         const fragment = document.createDocumentFragment();
                         const children = _.reject(_.map(this.rooms, this.roomStanzaItemToHTMLElement), _.isNil)
                         _.each(children, (child) => fragment.appendChild(child));
@@ -2709,7 +2515,6 @@
 
                     const input_el = this.el.querySelector('input#show-rooms');
                     input_el.classList.add('hidden')
-                    input_el.insertAdjacentHTML('afterend', tpl_spinner());
 
                     this.model.save({muc_domain: server});
                     this.updateRoomsList();
@@ -2725,38 +2530,6 @@
                      *      info.
                      */
                     // All MUC features found here: http://xmpp.org/registrar/disco-features.html
-                    el.querySelector('span.spinner').outerHTML =
-                        tpl_room_description({
-                            'jid': stanza.getAttribute('from'),
-                            'desc': _.get(_.head(sizzle('field[var="muc#roominfo_description"] value', stanza)), 'textContent'),
-                            'occ': _.get(_.head(sizzle('field[var="muc#roominfo_occupants"] value', stanza)), 'textContent'),
-                            'hidden': sizzle('feature[var="muc_hidden"]', stanza).length,
-                            'membersonly': sizzle('feature[var="muc_membersonly"]', stanza).length,
-                            'moderated': sizzle('feature[var="muc_moderated"]', stanza).length,
-                            'nonanonymous': sizzle('feature[var="muc_nonanonymous"]', stanza).length,
-                            'open': sizzle('feature[var="muc_open"]', stanza).length,
-                            'passwordprotected': sizzle('feature[var="muc_passwordprotected"]', stanza).length,
-                            'persistent': sizzle('feature[var="muc_persistent"]', stanza).length,
-                            'publicroom': sizzle('feature[var="muc_publicroom"]', stanza).length,
-                            'semianonymous': sizzle('feature[var="muc_semianonymous"]', stanza).length,
-                            'temporary': sizzle('feature[var="muc_temporary"]', stanza).length,
-                            'unmoderated': sizzle('feature[var="muc_unmoderated"]', stanza).length,
-                            'label_desc': __('Description:'),
-                            'label_jid': __('Room Address (JID):'),
-                            'label_occ': __('Occupants:'),
-                            'label_features': __('Features:'),
-                            'label_requires_auth': __('Requires authentication'),
-                            'label_hidden': __('Hidden'),
-                            'label_requires_invite': __('Requires an invitation'),
-                            'label_moderated': __('Moderated'),
-                            'label_non_anon': __('Non-anonymous'),
-                            'label_open_room': __('Open room'),
-                            'label_permanent_room': __('Permanent room'),
-                            'label_public': __('Public'),
-                            'label_semi_anon':  __('Semi-anonymous'),
-                            'label_temp_room':  __('Temporary room'),
-                            'label_unmoderated': __('Unmoderated')
-                        })
                 },
 
                 toggleRoomInfo (ev) {
@@ -2767,7 +2540,6 @@
                     if (div_el) {
                         u.slideIn(div_el).then(u.removeElement)
                     } else {
-                        parent_el.insertAdjacentHTML('beforeend', tpl_spinner());
                         _converse.connection.disco.info(
                             ev.target.getAttribute('data-room-jid'),
                             null,
