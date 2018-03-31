@@ -1,0 +1,27 @@
+{
+  "name": "@converse/register",
+  "version": "0.1.25",
+  "description": "Converse.js plugin which add support for in-band registration as specified in XEP-0077.",
+  "main": "converse-register.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jcbrand/converse.js.git"
+  },
+  "author": "cmrd Senya <senya@riseup.net>",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/jcbrand/converse.js/issues"
+  },
+  "homepage": "https://github.com/jcbrand/converse.js#readme",
+  "gitHead": "82af7041f1f5ca80d4dc6cb16565d75c7ad23f2d",
+  "dependencies": {
+    "@converse/chatview": "^0.1.17",
+    "@converse/core": "^0.1.1"
+  }
+}

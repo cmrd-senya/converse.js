@@ -1,0 +1,43 @@
+{
+  "name": "@converse/generic",
+  "version": "0.1.25",
+  "description": "Imports all generic modules of Converse.js including built-in UI",
+  "main": "converse.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jcbrand/converse.js.git"
+  },
+  "author": "cmrd Senya <senya@riseup.net>",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/jcbrand/converse.js/issues"
+  },
+  "homepage": "https://github.com/jcbrand/converse.js#readme",
+  "gitHead": "82af7041f1f5ca80d4dc6cb16565d75c7ad23f2d",
+  "dependencies": {
+    "@converse/bookmarks": "^0.1.25",
+    "@converse/chatview": "^0.1.25",
+    "@converse/controlbox": "^0.1.25",
+    "@converse/core": "^0.1.25",
+    "@converse/dragresize": "^0.1.25",
+    "@converse/fullscreen": "^0.1.25",
+    "@converse/headline": "^0.1.25",
+    "@converse/mam": "^0.1.25",
+    "@converse/minimize": "^0.1.25",
+    "@converse/muc": "^0.1.25",
+    "@converse/muc-embedded": "^0.1.25",
+    "@converse/muc-views": "^0.1.25",
+    "@converse/notification": "^0.1.25",
+    "@converse/otr": "^0.1.25",
+    "@converse/ping": "^0.1.25",
+    "@converse/register": "^0.1.25",
+    "@converse/roomslist": "^0.1.25",
+    "@converse/vcard": "^0.1.25"
+  }
+}

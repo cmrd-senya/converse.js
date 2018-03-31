@@ -1,0 +1,34 @@
+{
+  "name": "@converse/core",
+  "version": "0.1.1",
+  "description": "Converse.js core",
+  "main": "converse-core.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {
+    "backbone.browserStorage": "^0.0.3",
+    "backbone.nativeview": "^0.3.3",
+    "es6-promise": "^4.2.4",
+    "jed": "^1.1.1",
+    "jquery": "^3.3.1",
+    "moment": "^2.22.0",
+    "pluggable.js": "^2.0.0",
+    "sizzle": "^2.3.3",
+    "strophe.js": "^1.2.14"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jcbrand/converse.js.git"
+  },
+  "author": "cmrd Senya <senya@riseup.net>",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/jcbrand/converse.js/issues"
+  },
+  "homepage": "https://github.com/jcbrand/converse.js#readme",
+  "gitHead": "6381128a5fb66a6f4fcdc8980b44f3bc396b1848"
+}
