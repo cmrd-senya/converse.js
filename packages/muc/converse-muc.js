@@ -11,14 +11,14 @@
  */
 (function (root, factory) {
     define([
-            "form-utils",
-            "converse-core",
-            "converse-chatview",
-            "converse-disco",
+            "@converse/core/form-utils",
+            "@converse/core",
+            "@converse/chatview",
+            "@converse/disco",
             "backbone.overview",
-            "backbone.orderedlistview",
+            "backbone.overview/dist/backbone.orderedlistview",
             "backbone.vdomview",
-            "muc-utils"
+            "./utils"
     ], factory);
 }(this, function (u, converse) {
     "use strict";

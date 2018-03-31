@@ -12,7 +12,7 @@
     define([
         "es6-promise",
         "jed",
-        "lodash.noconflict",
+        "./lodash.noconflict",
         "moment",
         'moment/locale/af',
         'moment/locale/bg',

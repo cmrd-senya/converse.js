@@ -8,8 +8,8 @@
 
 (function (root, factory) {
     define([
-        "converse-core",
-        "tpl!chatboxes",
+        "@converse/core",
+        "lodash-template-webpack-loader!./chatboxes.html",
         "backbone.overview"
     ], factory);
 }(this, function (converse, tpl_chatboxes) {

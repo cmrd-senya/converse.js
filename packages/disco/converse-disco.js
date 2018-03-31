@@ -9,7 +9,7 @@
 
 /*global Backbone, define, window */
 (function (root, factory) {
-    define(["converse-core", "sizzle", "strophe.disco"], factory);
+    define(["@converse/core", "sizzle", "strophejs-plugin-disco/src/strophe.disco"], factory);
 }(this, function (converse, sizzle) {
 
     const { Backbone, Promise, Strophe, b64_sha1, utils, _ } = converse.env;

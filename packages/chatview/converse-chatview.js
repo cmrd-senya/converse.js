@@ -8,24 +8,24 @@
 
 (function (root, factory) {
     define([
-            "converse-core",
-            "bootstrap",
-            "emojione",
-            "xss",
-            "tpl!action",
-            "tpl!chatbox",
-            "tpl!chatbox_head",
-            "tpl!chatbox_message_form",
-            "tpl!emojis",
-            "tpl!help_message",
-            "tpl!info",
-            "tpl!message",
-            "tpl!new_day",
-            "tpl!spinner",
-            "tpl!spoiler_button",
-            "tpl!spoiler_message",
-            "tpl!toolbar",
-            "converse-chatboxes"
+            "@converse/core",
+            "bootstrap.native/dist/bootstrap-native-v4",
+            "emojione/lib/js/emojione",
+            "xss/dist/xss",
+            "lodash-template-webpack-loader!./action.html",
+            "lodash-template-webpack-loader!./chatbox.html",
+            "lodash-template-webpack-loader!./chatbox_head.html",
+            "lodash-template-webpack-loader!./chatbox_message_form.html",
+            "lodash-template-webpack-loader!./emojis.html",
+            "lodash-template-webpack-loader!./help_message.html",
+            "lodash-template-webpack-loader!./info.html",
+            "lodash-template-webpack-loader!./message.html",
+            "lodash-template-webpack-loader!./new_day.html",
+            "lodash-template-webpack-loader!./spinner.html",
+            "lodash-template-webpack-loader!./spoiler_button.html",
+            "lodash-template-webpack-loader!./spoiler_message.html",
+            "lodash-template-webpack-loader!./toolbar.html",
+            "@converse/chatboxes"
     ], factory);
 }(this, function (
             converse,

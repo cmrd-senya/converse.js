@@ -8,15 +8,15 @@
 (function (root, factory) {
     define(["sizzle",
             "es6-promise",
-            "lodash.noconflict",
-            "lodash.fp",
-            "polyfill",
-            "i18n",
-            "utils",
+            "./lodash.noconflict",
+            "./lodash.fp",
+            "./polyfill",
+            "./i18n",
+            "./utils",
             "moment",
-            "strophe",
-            "pluggable",
-            "backbone.noconflict",
+            "strophe.js",
+            "pluggable.js/dist/pluggable",
+            "./backbone.noconflict",
             "backbone.nativeview",
             "backbone.browserStorage"
     ], factory);

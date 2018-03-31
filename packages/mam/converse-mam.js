@@ -10,10 +10,10 @@
 
 (function (root, factory) {
     define(["sizzle",
-            "converse-core",
-            "utils",
-            "converse-disco",
-            "strophe.rsm"
+            "@converse/core",
+            "@converse/core/utils",
+            "@converse/disco",
+            "strophejs-plugin-rsm/src/strophe.rsm"
     ], factory);
 }(this, function (sizzle, converse, utils) {
     "use strict";

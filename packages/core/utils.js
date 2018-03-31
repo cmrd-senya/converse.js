@@ -11,8 +11,8 @@
     define([
         "sizzle",
         "es6-promise",
-        "lodash.noconflict",
-        "strophe",
+        "./lodash.noconflict",
+        "strophe.js",
     ], factory);
 }(this, function (
         sizzle,

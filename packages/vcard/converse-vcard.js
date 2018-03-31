@@ -7,7 +7,7 @@
 /*global define */
 
 (function (root, factory) {
-    define(["converse-core", "strophe.vcard"], factory);
+    define(["@converse/core", "strophejs-plugin-vcard/strophe.vcard"], factory);
 }(this, function (converse) {
     "use strict";
     const { Promise, Strophe, _, moment, sizzle } = converse.env;
