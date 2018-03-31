@@ -1,0 +1,26 @@
+{
+  "name": "@converse/mam",
+  "version": "0.1.1",
+  "description": "Converse.js XEP-0313: Message Archive Management",
+  "main": "converse-mam.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jcbrand/converse.js.git"
+  },
+  "author": "cmrd Senya <senya@riseup.net>",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/jcbrand/converse.js/issues"
+  },
+  "homepage": "https://github.com/jcbrand/converse.js#readme",
+  "gitHead": "6381128a5fb66a6f4fcdc8980b44f3bc396b1848",
+  "dependencies": {
+    "strophejs-plugin-rsm": "^0.0.2"
+  }
+}

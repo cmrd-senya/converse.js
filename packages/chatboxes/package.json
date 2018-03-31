@@ -1,0 +1,28 @@
+{
+  "name": "@converse/chatboxes",
+  "version": "0.1.1",
+  "description": "Converse.js chat boxes management",
+  "main": "converse-chatboxes.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {
+    "@converse/core": "^0.1.1",
+    "backbone.overview": "^1.0.2",
+    "lodash-template-webpack-loader": "^1.0.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jcbrand/converse.js.git"
+  },
+  "author": "cmrd Senya <senya@riseup.net>",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/jcbrand/converse.js/issues"
+  },
+  "homepage": "https://github.com/jcbrand/converse.js#readme",
+  "gitHead": "6381128a5fb66a6f4fcdc8980b44f3bc396b1848"
+}

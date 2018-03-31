@@ -1,0 +1,28 @@
+{
+  "name": "@converse/chatview",
+  "version": "0.1.17",
+  "description": "Converse.js ChatView UI components",
+  "main": "converse-chatview.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {
+    "bootstrap.native": "^2.0.22",
+    "emojione": "^3.1.2",
+    "lodash-template-webpack-loader": "^1.0.2",
+    "xss": "^0.3.7"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jcbrand/converse.js.git"
+  },
+  "author": "cmrd Senya <senya@riseup.net>",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/jcbrand/converse.js/issues"
+  },
+  "homepage": "https://github.com/jcbrand/converse.js#readme"
+}
