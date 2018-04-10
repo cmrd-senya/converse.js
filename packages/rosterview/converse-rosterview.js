@@ -8,20 +8,20 @@
 
 (function (root, factory) {
     define(["converse-core",
-            "tpl!add_contact_modal",
-            "tpl!group_header",
-            "tpl!pending_contact",
-            "tpl!requesting_contact",
-            "tpl!roster",
-            "tpl!roster_filter",
-            "tpl!roster_item",
-            "tpl!search_contact",
+            "tpl!node_modules/@converse/rosterview/add_contact_modal",
+            "tpl!node_modules/@converse/rosterview/group_header",
+            "tpl!node_modules/@converse/rosterview/pending_contact",
+            "tpl!node_modules/@converse/rosterview/requesting_contact",
+            "tpl!node_modules/@converse/rosterview/roster",
+            "tpl!node_modules/@converse/rosterview/roster_filter",
+            "tpl!node_modules/@converse/rosterview/roster_item",
+            "tpl!node_modules/@converse/rosterview/search_contact",
             "awesomplete",
             "converse-chatboxes",
             "converse-modal"
     ], factory);
 }(this, function (
-            converse, 
+            converse,
             tpl_add_contact_modal,
             tpl_group_header,
             tpl_pending_contact,
@@ -642,7 +642,7 @@
 
                 filter (q, type) {
                     /* Filter the group's contacts based on the query "q".
-                     * 
+                     *
                      * If all contacts are filtered out (i.e. hidden), then the
                      * group must be filtered out as well.
                      */

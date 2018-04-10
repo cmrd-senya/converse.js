@@ -12,10 +12,10 @@
 (function (root, factory) {
     define(["converse-core",
             "converse-muc",
-            "tpl!chatroom_bookmark_form",
-            "tpl!chatroom_bookmark_toggle",
-            "tpl!bookmark",
-            "tpl!bookmarks_list"
+            "tpl!node_modules/@converse/bookmarks/chatroom_bookmark_form",
+            "tpl!node_modules/@converse/bookmarks/chatroom_bookmark_toggle",
+            "tpl!node_modules/@converse/bookmarks/bookmark",
+            "tpl!node_modules/@converse/bookmarks/bookmarks_list"
         ],
         factory);
 }(this, function (

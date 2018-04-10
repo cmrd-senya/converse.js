@@ -8,10 +8,10 @@
 
 (function (root, factory) {
     define(["converse-core",
-            "tpl!chatbox_minimize",
-            "tpl!toggle_chats",
-            "tpl!trimmed_chat",
-            "tpl!chats_panel",
+            "tpl!node_modules/@converse/minimize/chatbox_minimize",
+            "tpl!node_modules/@converse/minimize/toggle_chats",
+            "tpl!node_modules/@converse/minimize/trimmed_chat",
+            "tpl!node_modules/@converse/minimize/chats_panel",
             "converse-chatview"
     ], factory);
 }(this, function (

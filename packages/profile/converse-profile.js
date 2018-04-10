@@ -9,10 +9,10 @@
 (function (root, factory) {
     define(["converse-core",
             "bootstrap",
-            "tpl!chat_status_modal",
-            "tpl!profile_modal",
-            "tpl!profile_view",
-            "tpl!status_option",
+            "tpl!node_modules/@converse/profile/chat_status_modal",
+            "tpl!node_modules/@converse/profile/profile_modal",
+            "tpl!node_modules/@converse/profile/profile_view",
+            "tpl!node_modules/@converse/profile/status_option",
             "converse-vcard",
             "converse-modal"
     ], factory);

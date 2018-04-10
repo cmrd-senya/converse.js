@@ -9,10 +9,10 @@
 (function (root, factory) {
     define(["converse-core",
             "lodash.fp",
-            "tpl!converse_brand_heading",
-            "tpl!controlbox",
-            "tpl!controlbox_toggle",
-            "tpl!login_panel",
+            "tpl!node_modules/@converse/controlbox/converse_brand_heading",
+            "tpl!node_modules/@converse/controlbox/controlbox",
+            "tpl!node_modules/@converse/controlbox/controlbox_toggle",
+            "tpl!node_modules/@converse/controlbox/login_panel",
             "converse-chatview",
             "converse-rosterview",
             "converse-profile"

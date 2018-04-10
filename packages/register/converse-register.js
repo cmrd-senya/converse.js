@@ -12,13 +12,13 @@
 (function (root, factory) {
     define(["form-utils",
             "converse-core",
-            "tpl!form_username",
-            "tpl!register_link",
-            "tpl!register_panel",
-            "tpl!registration_form",
-            "tpl!registration_request",
-            "tpl!form_input",
-            "tpl!spinner",
+            "tpl!node_modules/@converse/core/form_username",
+            "tpl!node_modules/@converse/register/register_link",
+            "tpl!node_modules/@converse/register/register_panel",
+            "tpl!node_modules/@converse/register/registration_form",
+            "tpl!node_modules/@converse/register/registration_request",
+            "tpl!node_modules/@converse/core/form_input",
+            "tpl!node_modules/@converse/chatview/spinner",
             "converse-controlbox"
     ], factory);
 }(this, function (

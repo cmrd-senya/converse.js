@@ -13,7 +13,7 @@
 
     define([ "converse-chatview",
             "bootstrap",
-            "tpl!toolbar_otr",
+            "tpl!node_modules/@converse/otr/toolbar_otr",
             'otr'
     ], factory);
 }(this, function (converse, bootstrap, tpl_toolbar_otr, otr) {

@@ -13,26 +13,26 @@
         "converse-core",
         "muc-utils",
         "emojione",
-        "tpl!add_chatroom_modal",
-        "tpl!chatarea",
-        "tpl!chatroom",
-        "tpl!chatroom_disconnect",
-        "tpl!chatroom_features",
-        "tpl!chatroom_form",
-        "tpl!chatroom_head",
-        "tpl!chatroom_invite",
-        "tpl!chatroom_nickname_form",
-        "tpl!chatroom_password_form",
-        "tpl!chatroom_sidebar",
-        "tpl!chatroom_toolbar",
-        "tpl!info",
-        "tpl!list_chatrooms_modal",
-        "tpl!occupant",
-        "tpl!room_description",
-        "tpl!room_item",
-        "tpl!room_panel",
-        "tpl!rooms_results",
-        "tpl!spinner",
+        "tpl!node_modules/@converse/muc-views/add_chatroom_modal",
+        "tpl!node_modules/@converse/muc-views/chatarea",
+        "tpl!node_modules/@converse/muc-views/chatroom",
+        "tpl!node_modules/@converse/muc-views/chatroom_disconnect",
+        "tpl!node_modules/@converse/muc-views/chatroom_features",
+        "tpl!node_modules/@converse/muc-views/chatroom_form",
+        "tpl!node_modules/@converse/muc-views/chatroom_head",
+        "tpl!node_modules/@converse/muc-views/chatroom_invite",
+        "tpl!node_modules/@converse/muc-views/chatroom_nickname_form",
+        "tpl!node_modules/@converse/muc-views/chatroom_password_form",
+        "tpl!node_modules/@converse/muc-views/chatroom_sidebar",
+        "tpl!node_modules/@converse/muc-views/chatroom_toolbar",
+        "tpl!node_modules/@converse/chatview/info",
+        "tpl!node_modules/@converse/muc-views/list_chatrooms_modal",
+        "tpl!node_modules/@converse/muc-views/occupant",
+        "tpl!node_modules/@converse/muc-views/room_description",
+        "tpl!node_modules/@converse/muc-views/room_item",
+        "tpl!node_modules/@converse/muc-views/room_panel",
+        "tpl!node_modules/@converse/muc-views/rooms_results",
+        "tpl!node_modules/@converse/chatview/spinner",
         "awesomplete",
         "converse-modal"
     ], factory);
@@ -258,7 +258,7 @@
                 el.querySelector('span.spinner').remove();
                 el.querySelector('a.room-info').classList.add('selected');
                 el.insertAdjacentHTML(
-                    'beforeEnd', 
+                    'beforeEnd',
                     tpl_room_description({
                         'jid': stanza.getAttribute('from'),
                         'desc': _.get(_.head(sizzle('field[var="muc#roominfo_description"] value', stanza)), 'textContent'),
@@ -309,7 +309,7 @@
                 }
             }
 
-            
+
             _converse.ListChatRoomsModal = _converse.BootstrapModal.extend({
 
                 events: {

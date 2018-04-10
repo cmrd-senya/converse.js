@@ -9,7 +9,7 @@
 (function (root, factory) {
     define([
             "converse-core",
-            "tpl!chatbox",
+            "tpl!node_modules/@converse/chatview/chatbox",
             "converse-chatview",
     ], factory);
 }(this, function (converse, tpl_chatbox) {

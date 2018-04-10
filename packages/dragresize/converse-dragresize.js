@@ -8,7 +8,7 @@
 
 (function (root, factory) {
     define(["converse-core",
-            "tpl!dragresize",
+            "tpl!node_modules/@converse/dragresize/dragresize",
             "converse-chatview",
             "converse-controlbox"
     ], factory);

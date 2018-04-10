@@ -9,7 +9,7 @@
 (function (root, factory) {
     define([
         "converse-core",
-        "tpl!chatboxes",
+        "tpl!node_modules/@converse/chatboxes/chatboxes",
         "backbone.overview"
     ], factory);
 }(this, function (converse, tpl_chatboxes) {
