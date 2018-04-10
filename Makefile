@@ -1,8 +1,8 @@
 # You can set these variables from the command line.
 UGLIFYJS		?= node_modules/.bin/uglifyjs
 BABEL			?= node_modules/.bin/babel
-BOURBON 		= ./node_modules/bourbon/app/assets/stylesheets/ 
-BOOTSTRAP		= ./node_modules/ 
+BOURBON 		= ./node_modules/bourbon/app/assets/stylesheets/
+BOOTSTRAP		= ./node_modules/
 BUILDDIR		= ./docs
 BUNDLE		  	?= ./.bundle/bin/bundle
 CHROMIUM		?= ./node_modules/.bin/run-headless-chromium
@@ -21,7 +21,7 @@ SPHINXOPTS	  	=
 OXIPNG          ?= oxipng
 
 
-# In the case user wishes to use RVM 
+# In the case user wishes to use RVM
 USE_RVM                 ?= false
 RVM_RUBY_VERSION        ?= 2.4.2
 ifeq ($(USE_RVM),true)
@@ -59,7 +59,7 @@ help:
 ## Miscellaneous
 
 .PHONY: serve
-serve: dev 
+serve: dev
 	$(HTTPSERVE) -p $(HTTPSERVE_PORT) -c-1
 
 .PHONY: serve_bg
@@ -109,6 +109,8 @@ release:
 
 stamp-npm: package.json package-lock.json
 	npm install
+	rm -r node_modules/@converse/*
+	ln -rs packages/* node_modules/@converse
 	touch stamp-npm
 
 stamp-bundler: Gemfile
@@ -160,6 +162,7 @@ watchjs: dev
 transpile: dev src
 	$(BABEL) --source-maps --out-dir=./builds ./src
 	$(BABEL) --source-maps --out-dir=./builds ./node_modules/backbone.vdomview/backbone.vdomview.js
+	find -L node_modules/@converse -name '*.js' -not -path 'node_modules/@converse/*/node_modules/*' | paste -d, -s - | xargs $(BABEL) --source-maps --out-dir=./builds node_modules --only
 	touch transpile
 
 .PHONY: logo
@@ -195,25 +198,25 @@ BUILDS = dist/converse.js \
 # dist/converse-esnext.min.js \
 
 dist/converse.js: transpile src stamp-npm
-	$(RJS) -o src/build.js include=converse out=dist/converse.js optimize=none 
+	$(RJS) -o src/build.js paths.converse=builds/@converse/generic/converse include=converse out=dist/converse.js optimize=none
 dist/converse.min.js: transpile src stamp-npm
-	$(RJS) -o src/build.js include=converse out=dist/converse.min.js
+	$(RJS) -o src/build.js paths.converse=builds/@converse/generic/converse include=converse out=dist/converse.min.js
 dist/converse-headless.js: transpile src stamp-npm
-	$(RJS) -o src/build.js paths.converse=src/headless include=converse out=dist/converse-headless.js optimize=none 
+	$(RJS) -o src/build.js paths.converse=builds/@converse/headless/headless include=converse out=dist/converse-headless.js optimize=none
 dist/converse-headless.min.js: transpile src stamp-npm
-	$(RJS) -o src/build.js paths.converse=src/headless include=converse out=dist/converse-headless.min.js
+	$(RJS) -o src/build.js paths.converse=builds/@converse/headless/headless include=converse out=dist/converse-headless.min.js
 dist/converse-esnext.js: src stamp-npm
-	$(RJS) -o src/build-esnext.js include=converse out=dist/converse-esnext.js optimize=none 
+	$(RJS) -o src/build-esnext.js paths.converse=builds/@converse/generic/converse include=converse out=dist/converse-esnext.js optimize=none
 dist/converse-esnext.min.js: src stamp-npm
-	$(RJS) -o src/build-esnext.js include=converse out=dist/converse-esnext.min.js
+	$(RJS) -o src/build-esnext.js paths.converse=builds/@converse/generic/converse include=converse out=dist/converse-esnext.min.js
 dist/converse-no-dependencies.js: transpile src stamp-npm
 	$(RJS) -o src/build-no-dependencies.js optimize=none out=dist/converse-no-dependencies.js
 dist/converse-no-dependencies.min.js: transpile src stamp-npm
 	$(RJS) -o src/build-no-dependencies.js out=dist/converse-no-dependencies.min.js
 dist/converse-muc-embedded.js: transpile src stamp-npm
-	$(RJS) -o src/build.js paths.converse=src/converse-embedded include=converse out=dist/converse-muc-embedded.js optimize=none 
+	$(RJS) -o src/build.js paths.converse=builds/@converse/embedded/converse-embedded include=converse out=dist/converse-muc-embedded.js optimize=none
 dist/converse-muc-embedded.min.js: transpile src stamp-npm
-	$(RJS) -o src/build.js paths.converse=src/converse-embedded include=converse out=dist/converse-muc-embedded.min.js
+	$(RJS) -o src/build.js paths.converse=builds/@converse/embedded/converse-embedded include=converse out=dist/converse-muc-embedded.min.js
 
 .PHONY: dist
 dist:: build
